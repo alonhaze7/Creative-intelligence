@@ -1,0 +1,13 @@
+# Large files (GitHub 100MB limit)
+*.mp4
+*.mov
+*.avi
+
+# Word documents (originals kept locally)
+*.docx
+
+# macOS
+.DS_Store
+
+# Other directories
+creative-intelligence-studio/
