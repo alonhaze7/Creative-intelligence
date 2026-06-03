@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Intelligence Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --text: #334155;
+            --text-light: #64748b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .dashboard-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dashboard-grid.active {
+            display: grid;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .card-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-primary {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .metric {
+            margin: 1rem 0;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .metric-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .metric-change.positive {
+            color: var(--success);
+        }
+
+        .metric-change.negative {
+            color: var(--danger);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin-top: 1rem;
+        }
+
+        .insights-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .insight-item {
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .insight-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .insight-description {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .insight-score {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 24px;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .feature-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .creative-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .creative-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .creative-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .creative-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .creative-content {
+            padding: 1rem;
+        }
+
+        .creative-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .creative-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .ai-analysis {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .ai-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🎨</div>
+                <div class="logo-text">
+                    <h1>Creative Intelligence</h1>
+                    <p>AI-Powered Marketing Performance Analysis</p>
+                </div>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a onclick="showTab('overview')">Overview</a></li>
+                    <li><a onclick="showTab('performance')">Performance</a></li>
+                    <li><a onclick="showTab('ai-insights')">AI Insights</a></li>
+                    <li><a onclick="showTab('channels')">Channels</a></li>
+                    <li><a onclick="showTab('creatives')">Creative Library</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="hero">
+                <h2>Transform Creative Performance with AI</h2>
+                <p>Analyze images, text, and performance across all marketing channels. Eliminate guesswork with statistical models that identify what works and uncover patterns in your creative strategy.</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" onclick="showTab('ai-insights')">Explore AI Insights</button>
+                    <button class="btn btn-secondary" onclick="showTab('creatives')">View Creative Library</button>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Powered Analysis</h3>
+                    <p class="feature-description">Advanced computer vision and NLP analyze every element of your creative—colors, composition, text, sentiment, and emotional triggers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Statistical Scoring</h3>
+                    <p class="feature-description">Machine learning models score each creative element to identify what drives performance and predict success.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3 class="feature-title">Cross-Channel Insights</h3>
+                    <p class="feature-description">Unified view across email, SMS, WhatsApp, social media, and 3rd party platforms to discover universal patterns.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3 class="feature-title">Pattern Recognition</h3>
+                    <p class="feature-description">Uncover hidden commonalities across high-performing ads to inform future creative decisions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Predictive Recommendations</h3>
+                    <p class="feature-description">Get actionable recommendations before launch based on historical performance data.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Audience Segmentation</h3>
+                    <p class="feature-description">Understand which creative elements resonate with specific audience segments.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Dashboard -->
+        <div id="performance" class="tab-content">
+            <div class="dashboard-grid active">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Overall Performance</h3>
+                        <span class="card-badge badge-success">+15%</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">87.4</div>
+                        <div class="metric-label">Creative Score (AI-Powered)</div>
+                        <div class="metric-change positive">↑ 12.3% vs last period</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Engagement Rate</h3>
+                        <span class="card-badge badge-success">High</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">34.2%</div>
+                        <div class="metric-label">Cross-Channel Average</div>
+                        <div class="metric-change positive">↑ 8.7% vs benchmark</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="engagementChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Conversion Impact</h3>
+                        <span class="card-badge badge-primary">Optimized</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$2.8M</div>
+                        <div class="metric-label">Revenue Attributed to Creative</div>
+                        <div class="metric-change positive">↑ 23.1% vs last month</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="conversionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Channel Performance</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="channelChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Creative Element Scores</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="elementChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Predictive Analysis</h3>
+                        <span class="card-badge badge-warning">Action Needed</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">92.1%</div>
+                        <div class="metric-label">Predicted Success Rate (Next Campaign)</div>
+                    </div>
+                    <ul class="insights-list">
+                        <li class="insight-item">
+                            <div class="insight-title">🎯 High-impact recommendation</div>
+                            <div class="insight-description">Increase blue color palette usage by 30% for 15% lift in engagement</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Insights -->
+        <div id="ai-insights" class="tab-content">
+            <div class="dashboard-grid active">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🤖 Visual AI Analysis</h3>
+                        <span class="card-badge badge-primary">Computer Vision</span>
+                    </div>
+                    <ul class="insights-list">
+                        <li class="insight-item">
+                            <div class="insight-title">Dominant Color Patterns</div>
+                            <div class="insight-description">Blue and purple gradients show 42% higher engagement. Warm tones (orange/red) drive urgency in promotional content.</div>
+                            <span class="insight-score">Impact: 9.2/10</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Composition Analysis</div>
+                            <div class="insight-description">Center-aligned subjects with 60/40 text-to-image ratio perform 28% better than full-bleed images.</div>
+                            <span class="insight-score">Impact: 8.7/10</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Human Face Detection</div>
+                            <div class="insight-description">Creatives featuring authentic human faces (not stock) see 35% higher click-through rates.</div>
+                            <span class="insight-score">Impact: 9.5/10</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📝 Text & Sentiment Analysis</h3>
+                        <span class="card-badge badge-primary">NLP</span>
+                    </div>
+                    <ul class="insights-list">
+                        <li class="insight-item">
+                            <div class="insight-title">Emotional Triggers</div>
+                            <div class="insight-description">Headlines with "joy" sentiment (82% positive) outperform "fear" messaging by 31% in retention campaigns.</div>
+                            <span class="insight-score">Impact: 8.9/10</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Word Choice Optimization</div>
+                            <div class="insight-description">Action verbs ("Discover", "Transform", "Unlock") generate 24% more conversions than passive language.</div>
+                            <span class="insight-score">Impact: 8.3/10</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Message Length</div>
+                            <div class="insight-description">Optimal headline length: 6-8 words. Body copy: 15-25 words. Exceeding reduces engagement by 19%.</div>
+                            <span class="insight-score">Impact: 7.8/10</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🎯 Pattern Recognition</h3>
+                        <span class="card-badge badge-success">ML Models</span>
+                    </div>
+                    <ul class="insights-list">
+                        <li class="insight-item">
+                            <div class="insight-title">Cross-Campaign Patterns</div>
+                            <div class="insight-description">Top 10% of ads share: minimal text overlay, high contrast, single focal point, and aspirational imagery.</div>
+                            <span class="insight-score">Confidence: 94%</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Audience Segment Preferences</div>
+                            <div class="insight-description">Gen Z responds 43% better to meme-style formats; Millennials prefer clean minimalist designs.</div>
+                            <span class="insight-score">Confidence: 89%</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Seasonal Trends</div>
+                            <div class="insight-description">Holiday campaigns with nostalgia themes (vintage filters, family imagery) outperform modern aesthetics by 37%.</div>
+                            <span class="insight-score">Confidence: 91%</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">💡 Predictive Recommendations</h3>
+                        <span class="card-badge badge-warning">Action Required</span>
+                    </div>
+                    <ul class="insights-list">
+                        <li class="insight-item">
+                            <div class="insight-title">Next Campaign Optimization</div>
+                            <div class="insight-description">AI predicts 92% success rate if you: use blue gradient backgrounds, 7-word headlines, authentic human faces.</div>
+                            <span class="insight-score">Predicted Lift: +28%</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">A/B Test Suggestions</div>
+                            <div class="insight-description">Test "Transform" vs "Unlock" in headlines (expected 15% variance), and center vs left-aligned layouts.</div>
+                            <span class="insight-score">Test Priority: High</span>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Channel-Specific Tactics</div>
+                            <div class="insight-description">Email: Add more whitespace (+22% engagement). SMS: Emoji usage (+31% open rate). WhatsApp: Personalization (+41% response).</div>
+                            <span class="insight-score">Implementation: Easy</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🔍 Brand Consistency Score</h3>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">91.3%</div>
+                        <div class="metric-label">Brand Alignment Score</div>
+                        <div class="metric-change positive">↑ 5.2% improvement</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="brandConsistencyChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">⚡ Real-time Alerts</h3>
+                    </div>
+                    <ul class="insights-list">
+                        <li class="insight-item">
+                            <div class="insight-title">🟢 High Performer Detected</div>
+                            <div class="insight-description">Campaign "Summer Flash Sale" exceeding benchmarks by 156%. Scale budget +50%.</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">🟡 Declining Performance</div>
+                            <div class="insight-description">Campaign "Product Launch" down 23% week-over-week. Creative refresh recommended.</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">🔵 Emerging Trend</div>
+                            <div class="insight-description">UGC-style content gaining 67% more traction. Consider pivot for Q3 strategy.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Channels -->
+        <div id="channels" class="tab-content">
+            <div class="dashboard-grid active">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📧 Email Marketing</h3>
+                        <span class="card-badge badge-success">Performing</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">42.8%</div>
+                        <div class="metric-label">Open Rate (AI-Optimized Subject Lines)</div>
+                        <div class="metric-change positive">↑ 18.3% vs industry avg</div>
+                    </div>
+                    <div class="ai-analysis">
+                        <strong>AI Insights:</strong>
+                        <div style="margin-top: 0.5rem;">
+                            <span class="ai-tag">Personalization: 94%</span>
+                            <span class="ai-tag">Optimal Send Time: 10AM</span>
+                            <span class="ai-tag">Best CTA: "Unlock Now"</span>
+                        </div>
+                    </div>
+                    <ul class="insights-list" style="margin-top: 1rem;">
+                        <li class="insight-item">
+                            <div class="insight-description">✓ Visual hierarchy: Header image + 3 content blocks</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-description">✓ Mobile-optimized: 67% of opens on mobile</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">💬 SMS Marketing</h3>
+                        <span class="card-badge badge-success">High Impact</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">89.2%</div>
+                        <div class="metric-label">Open Rate</div>
+                        <div class="metric-change positive">↑ 31.2% engagement</div>
+                    </div>
+                    <div class="ai-analysis">
+                        <strong>AI Insights:</strong>
+                        <div style="margin-top: 0.5rem;">
+                            <span class="ai-tag">Character Count: 95-120</span>
+                            <span class="ai-tag">Emoji Impact: +31%</span>
+                            <span class="ai-tag">Best Day: Thursday</span>
+                        </div>
+                    </div>
+                    <ul class="insights-list" style="margin-top: 1rem;">
+                        <li class="insight-item">
+                            <div class="insight-description">✓ Urgency words ("Today", "Now") drive 43% lift</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-description">✓ Shortened URLs increase click-through by 22%</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📱 WhatsApp Marketing</h3>
+                        <span class="card-badge badge-success">Growing</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">76.4%</div>
+                        <div class="metric-label">Response Rate</div>
+                        <div class="metric-change positive">↑ 52.1% vs email</div>
+                    </div>
+                    <div class="ai-analysis">
+                        <strong>AI Insights:</strong>
+                        <div style="margin-top: 0.5rem;">
+                            <span class="ai-tag">Rich Media: 2x engagement</span>
+                            <span class="ai-tag">Conversational Tone</span>
+                            <span class="ai-tag">Response Time: <5min</span>
+                        </div>
+                    </div>
+                    <ul class="insights-list" style="margin-top: 1rem;">
+                        <li class="insight-item">
+                            <div class="insight-description">✓ Images with product context perform best</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-description">✓ Two-way conversation increases trust by 67%</div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📱 Social Media</h3>
+                        <span class="card-badge badge-primary">Multi-Platform</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="socialChart"></canvas>
+                    </div>
+                    <div class="ai-analysis">
+                        <strong>Platform Insights:</strong>
+                        <div style="margin-top: 0.5rem;">
+                            <span class="ai-tag">Instagram: Carousel +45%</span>
+                            <span class="ai-tag">Facebook: Video +38%</span>
+                            <span class="ai-tag">TikTok: UGC-style +71%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🌐 Display Advertising</h3>
+                        <span class="card-badge badge-primary">Programmatic</span>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">2.8%</div>
+                        <div class="metric-label">Click-Through Rate</div>
+                        <div class="metric-change positive">↑ 67% vs standard ads</div>
+                    </div>
+                    <div class="ai-analysis">
+                        <strong>Creative Analysis:</strong>
+                        <div style="margin-top: 0.5rem;">
+                            <span class="ai-tag">Animated: +89%</span>
+                            <span class="ai-tag">Clear CTA: +45%</span>
+                            <span class="ai-tag">300x250: Best Size</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🔗 3rd Party Integration</h3>
+                        <span class="card-badge badge-primary">Connected</span>
+                    </div>
+                    <ul class="insights-list">
+                        <li class="insight-item">
+                            <div class="insight-title">Google Ads</div>
+                            <div class="insight-description">AI Score: 88.7 | Optimized for search intent</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">Meta Ads</div>
+                            <div class="insight-description">AI Score: 91.2 | Targeting accuracy: 94%</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">TikTok Ads</div>
+                            <div class="insight-description">AI Score: 86.5 | Creative freshness: High</div>
+                        </li>
+                        <li class="insight-item">
+                            <div class="insight-title">LinkedIn Ads</div>
+                            <div class="insight-description">AI Score: 83.9 | Professional tone: Excellent</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Creative Library -->
+        <div id="creatives" class="tab-content">
+            <div class="creative-grid">
+                <div class="creative-card">
+                    <div class="creative-image">🎯</div>
+                    <div class="creative-content">
+                        <div class="creative-title">Summer Flash Sale Campaign</div>
+                        <div class="ai-analysis">
+                            <strong>AI Analysis:</strong>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="ai-tag">Color: Blue Gradient</span>
+                                <span class="ai-tag">Sentiment: Joy</span>
+                                <span class="ai-tag">Faces: 1 Authentic</span>
+                            </div>
+                        </div>
+                        <div class="creative-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">94.2</div>
+                                <div class="stat-label">AI Score</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">42.8%</div>
+                                <div class="stat-label">CTR</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$2.8M</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="creative-card">
+                    <div class="creative-image">🚀</div>
+                    <div class="creative-content">
+                        <div class="creative-title">Product Launch - Email Series</div>
+                        <div class="ai-analysis">
+                            <strong>AI Analysis:</strong>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="ai-tag">Color: Purple</span>
+                                <span class="ai-tag">Sentiment: Excitement</span>
+                                <span class="ai-tag">Text: Action Verbs</span>
+                            </div>
+                        </div>
+                        <div class="creative-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">89.7</div>
+                                <div class="stat-label">AI Score</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">38.2%</div>
+                                <div class="stat-label">Open Rate</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$1.9M</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="creative-card">
+                    <div class="creative-image">💬</div>
+                    <div class="creative-content">
+                        <div class="creative-title">SMS Holiday Campaign</div>
+                        <div class="ai-analysis">
+                            <strong>AI Analysis:</strong>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="ai-tag">Length: 112 chars</span>
+                                <span class="ai-tag">Emoji: 3 used</span>
+                                <span class="ai-tag">Urgency: High</span>
+                            </div>
+                        </div>
+                        <div class="creative-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">92.1</div>
+                                <div class="stat-label">AI Score</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">87.3%</div>
+                                <div class="stat-label">Open Rate</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$890K</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="creative-card">
+                    <div class="creative-image">📱</div>
+                    <div class="creative-content">
+                        <div class="creative-title">WhatsApp Personalized Offer</div>
+                        <div class="ai-analysis">
+                            <strong>AI Analysis:</strong>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="ai-tag">Personalization: 98%</span>
+                                <span class="ai-tag">Rich Media: Yes</span>
+                                <span class="ai-tag">Tone: Friendly</span>
+                            </div>
+                        </div>
+                        <div class="creative-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">91.4</div>
+                                <div class="stat-label">AI Score</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">76.8%</div>
+                                <div class="stat-label">Response</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$1.2M</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="creative-card">
+                    <div class="creative-image">🎨</div>
+                    <div class="creative-content">
+                        <div class="creative-title">Instagram Carousel - Lifestyle</div>
+                        <div class="ai-analysis">
+                            <strong>AI Analysis:</strong>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="ai-tag">Format: Carousel</span>
+                                <span class="ai-tag">Faces: 3 Authentic</span>
+                                <span class="ai-tag">Composition: Perfect</span>
+                            </div>
+                        </div>
+                        <div class="creative-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">95.6</div>
+                                <div class="stat-label">AI Score</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">8.9%</div>
+                                <div class="stat-label">Engagement</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$3.1M</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="creative-card">
+                    <div class="creative-image">🎬</div>
+                    <div class="creative-content">
+                        <div class="creative-title">TikTok UGC-Style Ad</div>
+                        <div class="ai-analysis">
+                            <strong>AI Analysis:</strong>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="ai-tag">Style: UGC</span>
+                                <span class="ai-tag">Duration: 15s</span>
+                                <span class="ai-tag">Authenticity: High</span>
+                            </div>
+                        </div>
+                        <div class="creative-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">93.8</div>
+                                <div class="stat-label">AI Score</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">12.4%</div>
+                                <div class="stat-label">CTR</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$2.4M</div>
+                                <div class="stat-label">Revenue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Performance Chart
+        const performanceCtx = document.getElementById('performanceChart');
+        if (performanceCtx) {
+            new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Creative Score',
+                        data: [72, 76, 79, 82, 85, 87],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, min: 60 }
+                    }
+                }
+            });
+        }
+
+        // Engagement Chart
+        const engagementCtx = document.getElementById('engagementChart');
+        if (engagementCtx) {
+            new Chart(engagementCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Email', 'SMS', 'WhatsApp', 'Social', 'Display'],
+                    datasets: [{
+                        label: 'Engagement Rate',
+                        data: [42.8, 89.2, 76.4, 8.9, 2.8],
+                        backgroundColor: ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Conversion Chart
+        const conversionCtx = document.getElementById('conversionChart');
+        if (conversionCtx) {
+            new Chart(conversionCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Revenue ($M)',
+                        data: [2.1, 2.3, 2.5, 2.8],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Channel Performance
+        const channelCtx = document.getElementById('channelChart');
+        if (channelCtx) {
+            new Chart(channelCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Email', 'SMS', 'WhatsApp', 'Social', 'Display', '3rd Party'],
+                    datasets: [{
+                        data: [28, 18, 15, 22, 9, 8],
+                        backgroundColor: ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#64748b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Creative Element Scores
+        const elementCtx = document.getElementById('elementChart');
+        if (elementCtx) {
+            new Chart(elementCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Color', 'Composition', 'Text', 'Emotion', 'Brand', 'CTA'],
+                    datasets: [{
+                        label: 'Current',
+                        data: [92, 88, 85, 90, 91, 87],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)'
+                    }, {
+                        label: 'Benchmark',
+                        data: [75, 72, 78, 76, 80, 74],
+                        borderColor: '#64748b',
+                        backgroundColor: 'rgba(100, 116, 139, 0.1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+        }
+
+        // Social Media Chart
+        const socialCtx = document.getElementById('socialChart');
+        if (socialCtx) {
+            new Chart(socialCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Instagram', 'Facebook', 'TikTok', 'LinkedIn', 'Twitter'],
+                    datasets: [{
+                        label: 'Engagement Rate',
+                        data: [8.9, 5.2, 12.4, 3.7, 2.8],
+                        backgroundColor: ['#E4405F', '#1877F2', '#000000', '#0A66C2', '#1DA1F2']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Brand Consistency Chart
+        const brandCtx = document.getElementById('brandConsistencyChart');
+        if (brandCtx) {
+            new Chart(brandCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Brand Score',
+                        data: [84, 86, 87, 89, 90, 91],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, min: 80, max: 100 }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

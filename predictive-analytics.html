@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Analytics - Creative Intelligence</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #334155;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: #64748b;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .prediction-score {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-value {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .confidence-bar {
+            margin-top: 1rem;
+        }
+
+        .confidence-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .prediction-list {
+            list-style: none;
+        }
+
+        .prediction-item {
+            padding: 1.25rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .prediction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .prediction-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .lift-badge {
+            padding: 0.5rem 1rem;
+            background: #10b981;
+            color: white;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .lift-badge.moderate {
+            background: #f59e0b;
+        }
+
+        .lift-badge.low {
+            background: #64748b;
+        }
+
+        .prediction-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .action-tag {
+            padding: 0.25rem 0.75rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .chart-wrapper {
+            margin-top: 1.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .scenario-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .scenario-card:hover {
+            border-color: #667eea;
+            transform: translateY(-4px);
+        }
+
+        .scenario-card.best {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-color: #10b981;
+        }
+
+        .scenario-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .scenario-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .scenario-metric {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .test-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .test-card {
+            background: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .test-priority {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .priority-high {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .priority-medium {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .priority-low {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .test-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-variance {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .recommendation-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .banner-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .recommendation-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1.25rem;
+            border-radius: 12px;
+        }
+
+        .recommendation-item h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        .recommendation-item p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 1.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -2.25rem;
+            top: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 12px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: #64748b;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .impact-matrix {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .impact-cell {
+            aspect-ratio: 1;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .impact-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .impact-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
+        .impact-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔮 Predictive Analytics Engine</h1>
+            <p>AI-powered performance forecasting and optimization recommendations for your next campaign</p>
+        </div>
+
+        <!-- Next Campaign Prediction -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">🎯</div>
+                <h2 class="card-title">Next Campaign Performance Prediction</h2>
+            </div>
+
+            <div class="prediction-score">
+                <div class="score-value">92.1%</div>
+                <div class="score-label">Predicted Success Rate</div>
+                <div class="confidence-bar">
+                    <div class="confidence-label">
+                        <span>Model Confidence</span>
+                        <span>94%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 94%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario-grid">
+                <div class="scenario-card">
+                    <div class="scenario-label">Conservative</div>
+                    <div class="scenario-value">87.3%</div>
+                    <div class="scenario-metric">Expected Success</div>
+                </div>
+                <div class="scenario-card best">
+                    <div class="scenario-label">Recommended ✓</div>
+                    <div class="scenario-value">92.1%</div>
+                    <div class="scenario-metric">With AI Optimization</div>
+                </div>
+                <div class="scenario-card">
+                    <div class="scenario-label">Optimistic</div>
+                    <div class="scenario-value">96.7%</div>
+                    <div class="scenario-metric">Best Case Scenario</div>
+                </div>
+            </div>
+
+            <div class="chart-wrapper">
+                <div class="chart-container">
+                    <canvas id="predictionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Recommendations -->
+        <div class="recommendation-banner">
+            <div class="banner-title">
+                <span>💡</span>
+                <span>AI-Powered Recommendations for Maximum Impact</span>
+            </div>
+            <p style="opacity: 0.9; line-height: 1.6; margin-bottom: 1rem;">
+                Based on analysis of 10,000+ campaigns and your historical performance data, these optimizations will deliver the highest performance lift.
+            </p>
+            <div class="recommendation-grid">
+                <div class="recommendation-item">
+                    <h4>🎨 Visual Optimization</h4>
+                    <p>Use blue gradient backgrounds with authentic human faces showing joy emotion. Apply rule of thirds composition.</p>
+                    <strong style="display: block; margin-top: 0.5rem;">Expected lift: +42%</strong>
+                </div>
+                <div class="recommendation-item">
+                    <h4>📝 Copy Optimization</h4>
+                    <p>Craft 7-word headlines starting with action verbs ("Discover", "Transform"). Add name + location personalization.</p>
+                    <strong style="display: block; margin-top: 0.5rem;">Expected lift: +38%</strong>
+                </div>
+                <div class="recommendation-item">
+                    <h4>📱 Channel Strategy</h4>
+                    <p>Lead with Instagram carousel (8.9% engagement), follow up with SMS (89% open rate), close with email.</p>
+                    <strong style="display: block; margin-top: 0.5rem;">Expected lift: +31%</strong>
+                </div>
+                <div class="recommendation-item">
+                    <h4>⏰ Timing Optimization</h4>
+                    <p>Launch Tuesday 10AM for email, Thursday 2PM for SMS, Sunday 7PM for social media posts.</p>
+                    <strong style="display: block; margin-top: 0.5rem;">Expected lift: +24%</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- High-Impact Optimizations -->
+        <div class="prediction-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🚀</div>
+                    <h2 class="card-title">High-Impact Optimizations</h2>
+                </div>
+
+                <ul class="prediction-list">
+                    <li class="prediction-item">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Color Palette Shift</div>
+                            <div class="lift-badge">+42% Lift</div>
+                        </div>
+                        <div class="prediction-description">
+                            Increase blue and purple gradient usage by 30%. These color schemes consistently outperform warm tones across all channels. Expected engagement lift of 42%.
+                        </div>
+                        <div class="action-tags">
+                            <span class="action-tag">Easy to implement</span>
+                            <span class="action-tag">High confidence: 96%</span>
+                            <span class="action-tag">All channels</span>
+                        </div>
+                    </li>
+
+                    <li class="prediction-item">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Authentic Face Integration</div>
+                            <div class="lift-badge">+35% Lift</div>
+                        </div>
+                        <div class="prediction-description">
+                            Replace stock photography with authentic human faces showing positive emotions. Center-right placement with direct eye contact drives maximum engagement.
+                        </div>
+                        <div class="action-tags">
+                            <span class="action-tag">Moderate effort</span>
+                            <span class="action-tag">High confidence: 93%</span>
+                            <span class="action-tag">Display & social</span>
+                        </div>
+                    </li>
+
+                    <li class="prediction-item">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Headline Reformulation</div>
+                            <div class="lift-badge">+24% Lift</div>
+                        </div>
+                        <div class="prediction-description">
+                            Rewrite headlines to 6-8 words starting with action verbs. Replace passive language with "Discover", "Transform", "Unlock", "Achieve" for better conversion.
+                        </div>
+                        <div class="action-tags">
+                            <span class="action-tag">Easy to implement</span>
+                            <span class="action-tag">High confidence: 91%</span>
+                            <span class="action-tag">All text-based</span>
+                        </div>
+                    </li>
+
+                    <li class="prediction-item">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Advanced Personalization</div>
+                            <div class="lift-badge moderate">+89% Lift</div>
+                        </div>
+                        <div class="prediction-description">
+                            Implement dynamic personalization combining name, location, and past behavior. Layer multiple personalization elements for exponential impact.
+                        </div>
+                        <div class="action-tags">
+                            <span class="action-tag">Complex setup</span>
+                            <span class="action-tag">Confidence: 87%</span>
+                            <span class="action-tag">Email & SMS</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🧪</div>
+                    <h2 class="card-title">Prioritized A/B Tests</h2>
+                </div>
+
+                <div class="test-matrix">
+                    <div class="test-card">
+                        <div class="test-priority priority-high">High Priority</div>
+                        <div class="test-name">Headline Test</div>
+                        <div class="test-variance">±15%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            "Discover" vs "Unlock"
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-priority priority-high">High Priority</div>
+                        <div class="test-name">Color Test</div>
+                        <div class="test-variance">±22%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            Blue vs Purple gradient
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-priority priority-medium">Medium Priority</div>
+                        <div class="test-name">Layout Test</div>
+                        <div class="test-variance">±18%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            Center vs Left align
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-priority priority-high">High Priority</div>
+                        <div class="test-name">Image Test</div>
+                        <div class="test-variance">±28%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            Face vs Product only
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-priority priority-medium">Medium Priority</div>
+                        <div class="test-name">CTA Test</div>
+                        <div class="test-variance">±12%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            Button color variants
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-priority priority-low">Low Priority</div>
+                        <div class="test-name">Time Test</div>
+                        <div class="test-variance">±8%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            10AM vs 2PM send
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-priority priority-medium">Medium Priority</div>
+                        <div class="test-name">Emoji Test</div>
+                        <div class="test-variance">±16%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            With vs without emoji
+                        </div>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-priority priority-high">High Priority</div>
+                        <div class="test-name">Format Test</div>
+                        <div class="test-variance">±31%</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: #64748b;">
+                            Carousel vs Single
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <div class="chart-container">
+                        <canvas id="abtestChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expected Impact -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">Expected Business Impact</h2>
+            </div>
+
+            <div class="impact-matrix">
+                <div class="impact-cell" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                    <div class="impact-icon">💰</div>
+                    <div class="impact-label">Revenue Lift</div>
+                    <div class="impact-value">+$840K</div>
+                </div>
+
+                <div class="impact-cell" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                    <div class="impact-icon">📈</div>
+                    <div class="impact-label">Engagement</div>
+                    <div class="impact-value">+31.2%</div>
+                </div>
+
+                <div class="impact-cell" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                    <div class="impact-icon">🎯</div>
+                    <div class="impact-label">CTR</div>
+                    <div class="impact-value">+28.4%</div>
+                </div>
+
+                <div class="impact-cell" style="background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);">
+                    <div class="impact-icon">🔄</div>
+                    <div class="impact-label">Conversion</div>
+                    <div class="impact-value">+23.7%</div>
+                </div>
+
+                <div class="impact-cell" style="background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);">
+                    <div class="impact-icon">⏱️</div>
+                    <div class="impact-label">Time Saved</div>
+                    <div class="impact-value">40 hrs</div>
+                </div>
+
+                <div class="impact-cell" style="background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);">
+                    <div class="impact-icon">💡</div>
+                    <div class="impact-label">ROI</div>
+                    <div class="impact-value">12.4x</div>
+                </div>
+            </div>
+
+            <div class="chart-wrapper">
+                <div class="chart-container">
+                    <canvas id="impactChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Timeline -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">📅</div>
+                <h2 class="card-title">Recommended Implementation Timeline</h2>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Week 1: Quick Wins</div>
+                        <div class="timeline-description">
+                            Implement headline reformulation and color palette optimization. These require minimal effort but deliver 24-42% performance lift. Update creative templates with new guidelines.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Week 2: Visual Optimization</div>
+                        <div class="timeline-description">
+                            Commission or source authentic human face photography. Apply rule of thirds composition to all hero images. Launch first round of A/B tests on high-priority variations.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Week 3: Personalization Setup</div>
+                        <div class="timeline-description">
+                            Configure dynamic personalization combining name, location, and behavior data. Set up automated triggers and segmentation rules in Marketing Cloud.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Week 4: Test & Refine</div>
+                        <div class="timeline-description">
+                            Analyze A/B test results, implement winning variations. Launch full campaign with all optimizations. Monitor real-time performance against predictions.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Week 5: Scale & Optimize</div>
+                        <div class="timeline-description">
+                            Scale budget on high-performing channels. Apply learnings to future campaigns. Document best practices and update creative guidelines for the team.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Prediction Chart
+        const predictionCtx = document.getElementById('predictionChart');
+        new Chart(predictionCtx, {
+            type: 'line',
+            data: {
+                labels: ['Current', 'Quick Wins', 'Visual Opt', 'Personalization', 'Full Optimization'],
+                datasets: [{
+                    label: 'Predicted Success Rate',
+                    data: [78.4, 83.2, 87.6, 90.1, 92.1],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#667eea'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 70,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // A/B Test Chart
+        const abtestCtx = document.getElementById('abtestChart');
+        new Chart(abtestCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Headline', 'Color', 'Layout', 'Image', 'CTA', 'Time', 'Emoji', 'Format'],
+                datasets: [{
+                    label: 'Expected Variance (%)',
+                    data: [15, 22, 18, 28, 12, 8, 16, 31],
+                    backgroundColor: [
+                        '#ef4444', '#ef4444', '#f59e0b', '#ef4444',
+                        '#f59e0b', '#10b981', '#f59e0b', '#ef4444'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '±' + value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Impact Chart
+        const impactCtx = document.getElementById('impactChart');
+        new Chart(impactCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Revenue', 'Engagement', 'CTR', 'Conversion', 'Brand', 'Efficiency'],
+                datasets: [
+                    {
+                        label: 'Current Performance',
+                        data: [72, 68, 71, 69, 85, 74],
+                        borderColor: '#94a3b8',
+                        backgroundColor: 'rgba(148, 163, 184, 0.2)'
+                    },
+                    {
+                        label: 'Predicted with Optimization',
+                        data: [93, 89, 91, 87, 92, 95],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

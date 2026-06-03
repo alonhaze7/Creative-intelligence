@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Cloud Integration - Creative Intelligence</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            min-height: 100vh;
+            color: #334155;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .header-text h1 {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-text p {
+            color: #64748b;
+            font-size: 1.125rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem 2rem;
+        }
+
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .channel-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid;
+        }
+
+        .channel-card.email {
+            border-color: #6366f1;
+        }
+
+        .channel-card.sms {
+            border-color: #10b981;
+        }
+
+        .channel-card.whatsapp {
+            border-color: #25D366;
+        }
+
+        .channel-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .channel-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+        }
+
+        .email .channel-icon {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+
+        .sms .channel-icon {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .whatsapp .channel-icon {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .channel-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .channel-subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .positive {
+            color: #10b981;
+        }
+
+        .negative {
+            color: #ef4444;
+        }
+
+        .data-points {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .data-points h4 {
+            font-size: 1rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .data-point {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-point:last-child {
+            border-bottom: none;
+        }
+
+        .data-point-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .data-point-value {
+            font-weight: 600;
+            color: #6366f1;
+        }
+
+        .ai-insights {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .ai-insights h4 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .insight-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+
+        .insight-item::before {
+            content: "✓";
+            margin-right: 0.5rem;
+            font-weight: 700;
+        }
+
+        .chart-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+        .third-party-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .third-party-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .third-party-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #6366f1;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .third-party-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .platform-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .platform-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .platform-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .platform-stat {
+            text-align: center;
+        }
+
+        .platform-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        .platform-stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .integration-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .data-flow-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+        }
+
+        .flow-step {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .flow-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-label {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-description {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #6366f1;
+            margin: 0 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="header-icon">☁️</div>
+            <div class="header-text">
+                <h1>Marketing Cloud Integration Dashboard</h1>
+                <p>Real-time Creative Performance Across Email, SMS, WhatsApp & 3rd Party Platforms</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Marketing Cloud Channels -->
+        <div class="integration-grid">
+            <!-- Email Marketing -->
+            <div class="channel-card email">
+                <div class="channel-header">
+                    <div class="channel-icon">📧</div>
+                    <div>
+                        <div class="channel-title">Email Marketing</div>
+                        <div class="channel-subtitle">Salesforce Marketing Cloud</div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">42.8%</div>
+                        <div class="stat-label">Open Rate</div>
+                        <div class="stat-change positive">↑ 18.3%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">12.4%</div>
+                        <div class="stat-label">Click Rate</div>
+                        <div class="stat-change positive">↑ 9.7%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">3.8%</div>
+                        <div class="stat-label">Conversion</div>
+                        <div class="stat-change positive">↑ 23.1%</div>
+                    </div>
+                </div>
+
+                <div class="data-points">
+                    <h4>📊 Data Collection Points</h4>
+                    <div class="data-point">
+                        <span class="data-point-label">Subject Line Text</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Preheader Text</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Email Body Content</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Image Analysis (AI Vision)</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">CTA Button Text & Color</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Layout & Design Elements</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Send Time Optimization</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Personalization Score</span>
+                        <span class="data-point-value">94%</span>
+                    </div>
+                </div>
+
+                <div class="ai-insights">
+                    <h4>🤖 AI Creative Insights</h4>
+                    <div class="insight-item">Best subject lines: 6-8 words, question format, personalized</div>
+                    <div class="insight-item">Hero images with authentic faces drive +35% engagement</div>
+                    <div class="insight-item">Blue gradient CTAs outperform solid colors by +28%</div>
+                    <div class="insight-item">Mobile-optimized layouts: 67% of opens on mobile devices</div>
+                    <div class="insight-item">Optimal send time: Tuesday-Thursday, 10AM local time</div>
+                </div>
+            </div>
+
+            <!-- SMS Marketing -->
+            <div class="channel-card sms">
+                <div class="channel-header">
+                    <div class="channel-icon">💬</div>
+                    <div>
+                        <div class="channel-title">SMS Marketing</div>
+                        <div class="channel-subtitle">Salesforce Marketing Cloud</div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">89.2%</div>
+                        <div class="stat-label">Open Rate</div>
+                        <div class="stat-change positive">↑ 12.4%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">31.8%</div>
+                        <div class="stat-label">Click Rate</div>
+                        <div class="stat-change positive">↑ 15.2%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">7.2%</div>
+                        <div class="stat-label">Conversion</div>
+                        <div class="stat-change positive">↑ 31.5%</div>
+                    </div>
+                </div>
+
+                <div class="data-points">
+                    <h4>📊 Data Collection Points</h4>
+                    <div class="data-point">
+                        <span class="data-point-label">Message Text Content</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Character Count</span>
+                        <span class="data-point-value">Avg: 112</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Emoji Usage</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Urgency Keywords</span>
+                        <span class="data-point-value">✓ Detected</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Shortened URL Performance</span>
+                        <span class="data-point-value">✓ Tracked</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Send Time Analysis</span>
+                        <span class="data-point-value">✓ Optimized</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Sentiment Score</span>
+                        <span class="data-point-value">86% Positive</span>
+                    </div>
+                </div>
+
+                <div class="ai-insights">
+                    <h4>🤖 AI Creative Insights</h4>
+                    <div class="insight-item">Optimal length: 95-120 characters for best engagement</div>
+                    <div class="insight-item">Emoji usage increases click-through by +31%</div>
+                    <div class="insight-item">Urgency words ("Today", "Now", "Limited") drive +43% lift</div>
+                    <div class="insight-item">Personalized greetings boost response by +52%</div>
+                    <div class="insight-item">Best send time: Thursday 2PM, avoid early morning/late evening</div>
+                </div>
+            </div>
+
+            <!-- WhatsApp Marketing -->
+            <div class="channel-card whatsapp">
+                <div class="channel-header">
+                    <div class="channel-icon">📱</div>
+                    <div>
+                        <div class="channel-title">WhatsApp Business</div>
+                        <div class="channel-subtitle">Salesforce Marketing Cloud</div>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-value">76.4%</div>
+                        <div class="stat-label">Read Rate</div>
+                        <div class="stat-change positive">↑ 8.9%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">45.2%</div>
+                        <div class="stat-label">Response Rate</div>
+                        <div class="stat-change positive">↑ 22.1%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">8.9%</div>
+                        <div class="stat-label">Conversion</div>
+                        <div class="stat-change positive">↑ 41.3%</div>
+                    </div>
+                </div>
+
+                <div class="data-points">
+                    <h4>📊 Data Collection Points</h4>
+                    <div class="data-point">
+                        <span class="data-point-label">Message Content</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Rich Media (Images/Videos)</span>
+                        <span class="data-point-value">✓ AI Vision</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Conversational Tone</span>
+                        <span class="data-point-value">✓ NLP</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Template Performance</span>
+                        <span class="data-point-value">✓ Tracked</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Button Click Tracking</span>
+                        <span class="data-point-value">✓ Analyzed</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Response Time</span>
+                        <span class="data-point-value">Avg: 4.2min</span>
+                    </div>
+                    <div class="data-point">
+                        <span class="data-point-label">Personalization Level</span>
+                        <span class="data-point-value">98%</span>
+                    </div>
+                </div>
+
+                <div class="ai-insights">
+                    <h4>🤖 AI Creative Insights</h4>
+                    <div class="insight-item">Rich media messages drive 2x higher engagement than text-only</div>
+                    <div class="insight-item">Conversational tone outperforms marketing-speak by +67%</div>
+                    <div class="insight-item">Product images with lifestyle context perform best</div>
+                    <div class="insight-item">Two-way conversations increase trust and conversion by +89%</div>
+                    <div class="insight-item">Quick response time (<5min) critical for maintaining engagement</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cross-Channel Performance -->
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2 class="chart-title">📈 Cross-Channel Creative Performance</h2>
+                <div class="badge badge-success">All channels optimized</div>
+            </div>
+            <div class="chart-container">
+                <canvas id="crossChannelChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 3rd Party Integrations -->
+        <div class="third-party-section">
+            <div class="chart-header">
+                <h2 class="chart-title">🔗 3rd Party Platform Integrations</h2>
+                <div class="badge badge-info">6 Platforms Connected</div>
+            </div>
+
+            <div class="third-party-grid">
+                <div class="third-party-card">
+                    <div class="platform-header">
+                        <div class="platform-icon">G</div>
+                        <div class="platform-name">Google Ads</div>
+                    </div>
+                    <div class="platform-stats">
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">88.7</div>
+                            <div class="platform-stat-label">AI Score</div>
+                        </div>
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">3.2%</div>
+                            <div class="platform-stat-label">CTR</div>
+                        </div>
+                    </div>
+                    <span class="integration-status">✓ Connected</span>
+                    <div style="margin-top: 1rem; font-size: 0.875rem; color: #64748b; line-height: 1.6;">
+                        <strong>Data Collected:</strong> Ad copy, headlines, display images, responsive search ads, extensions
+                        <br><br>
+                        <strong>AI Insight:</strong> Search intent alignment at 94%, keyword-creative match optimized
+                    </div>
+                </div>
+
+                <div class="third-party-card">
+                    <div class="platform-header">
+                        <div class="platform-icon">f</div>
+                        <div class="platform-name">Meta Ads</div>
+                    </div>
+                    <div class="platform-stats">
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">91.2</div>
+                            <div class="platform-stat-label">AI Score</div>
+                        </div>
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">2.8%</div>
+                            <div class="platform-stat-label">CTR</div>
+                        </div>
+                    </div>
+                    <span class="integration-status">✓ Connected</span>
+                    <div style="margin-top: 1rem; font-size: 0.875rem; color: #64748b; line-height: 1.6;">
+                        <strong>Data Collected:</strong> Ad creatives, carousel images, video content, ad copy, audience targeting
+                        <br><br>
+                        <strong>AI Insight:</strong> UGC-style content performing +71% better, targeting accuracy 94%
+                    </div>
+                </div>
+
+                <div class="third-party-card">
+                    <div class="platform-header">
+                        <div class="platform-icon">🎵</div>
+                        <div class="platform-name">TikTok Ads</div>
+                    </div>
+                    <div class="platform-stats">
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">86.5</div>
+                            <div class="platform-stat-label">AI Score</div>
+                        </div>
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">12.4%</div>
+                            <div class="platform-stat-label">Engage</div>
+                        </div>
+                    </div>
+                    <span class="integration-status">✓ Connected</span>
+                    <div style="margin-top: 1rem; font-size: 0.875rem; color: #64748b; line-height: 1.6;">
+                        <strong>Data Collected:</strong> Video content, audio tracks, captions, hashtags, trends
+                        <br><br>
+                        <strong>AI Insight:</strong> Authentic UGC format critical, first 3 seconds decisive for retention
+                    </div>
+                </div>
+
+                <div class="third-party-card">
+                    <div class="platform-header">
+                        <div class="platform-icon">in</div>
+                        <div class="platform-name">LinkedIn Ads</div>
+                    </div>
+                    <div class="platform-stats">
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">83.9</div>
+                            <div class="platform-stat-label">AI Score</div>
+                        </div>
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">3.7%</div>
+                            <div class="platform-stat-label">CTR</div>
+                        </div>
+                    </div>
+                    <span class="integration-status">✓ Connected</span>
+                    <div style="margin-top: 1rem; font-size: 0.875rem; color: #64748b; line-height: 1.6;">
+                        <strong>Data Collected:</strong> Sponsored content, document ads, video ads, thought leadership
+                        <br><br>
+                        <strong>AI Insight:</strong> Professional tone essential, data-driven insights resonate +45%
+                    </div>
+                </div>
+
+                <div class="third-party-card">
+                    <div class="platform-header">
+                        <div class="platform-icon">📷</div>
+                        <div class="platform-name">Instagram Ads</div>
+                    </div>
+                    <div class="platform-stats">
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">90.3</div>
+                            <div class="platform-stat-label">AI Score</div>
+                        </div>
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">8.9%</div>
+                            <div class="platform-stat-label">Engage</div>
+                        </div>
+                    </div>
+                    <span class="integration-status">✓ Connected</span>
+                    <div style="margin-top: 1rem; font-size: 0.875rem; color: #64748b; line-height: 1.6;">
+                        <strong>Data Collected:</strong> Stories, reels, carousel posts, shopping tags, influencer content
+                        <br><br>
+                        <strong>AI Insight:</strong> Carousel format drives +45% engagement, authentic lifestyle imagery key
+                    </div>
+                </div>
+
+                <div class="third-party-card">
+                    <div class="platform-header">
+                        <div class="platform-icon">🐦</div>
+                        <div class="platform-name">Twitter/X Ads</div>
+                    </div>
+                    <div class="platform-stats">
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">79.1</div>
+                            <div class="platform-stat-label">AI Score</div>
+                        </div>
+                        <div class="platform-stat">
+                            <div class="platform-stat-value">2.1%</div>
+                            <div class="platform-stat-label">CTR</div>
+                        </div>
+                    </div>
+                    <span class="integration-status">✓ Connected</span>
+                    <div style="margin-top: 1rem; font-size: 0.875rem; color: #64748b; line-height: 1.6;">
+                        <strong>Data Collected:</strong> Tweet copy, images, polls, threads, video content
+                        <br><br>
+                        <strong>AI Insight:</strong> Concise messaging critical, trending topics boost visibility +52%
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Flow Diagram -->
+        <div class="data-flow-section">
+            <h2 class="chart-title" style="margin-bottom: 1rem;">🔄 AI-Powered Data Flow Architecture</h2>
+            <p style="color: #64748b; line-height: 1.6; margin-bottom: 2rem;">
+                Creative Intelligence integrates with all marketing platforms to collect, analyze, and optimize creative assets in real-time using advanced AI models.
+            </p>
+
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-icon">📊</div>
+                    <div class="flow-label">Data Collection</div>
+                    <div class="flow-description">Ingest creative assets from all channels via API</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">🤖</div>
+                    <div class="flow-label">AI Analysis</div>
+                    <div class="flow-description">Computer Vision + NLP analyze images & text</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">📈</div>
+                    <div class="flow-label">Statistical Models</div>
+                    <div class="flow-description">ML models score & predict performance</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-icon">💡</div>
+                    <div class="flow-label">Insights & Actions</div>
+                    <div class="flow-description">Deliver recommendations & auto-optimize</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px;">
+                <h4 style="color: #1e293b; margin-bottom: 1rem;">📋 Integration Capabilities</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div>
+                        <strong style="color: #6366f1;">Marketing Cloud:</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #64748b; font-size: 0.875rem; line-height: 1.8;">
+                            <li>Journey Builder integration</li>
+                            <li>Email Studio assets</li>
+                            <li>Mobile Studio (SMS/Push)</li>
+                            <li>Social Studio posts</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong style="color: #6366f1;">Data Sources:</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #64748b; font-size: 0.875rem; line-height: 1.8;">
+                            <li>Salesforce CRM data</li>
+                            <li>CDP unified profiles</li>
+                            <li>Analytics & reporting</li>
+                            <li>Third-party attribution</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong style="color: #6366f1;">AI Models:</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #64748b; font-size: 0.875rem; line-height: 1.8;">
+                            <li>Computer Vision (ResNet, YOLO)</li>
+                            <li>NLP (BERT, GPT)</li>
+                            <li>Sentiment Analysis</li>
+                            <li>Predictive ML (XGBoost)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong style="color: #6366f1;">Outputs:</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem; color: #64748b; font-size: 0.875rem; line-height: 1.8;">
+                            <li>Creative performance scores</li>
+                            <li>Real-time recommendations</li>
+                            <li>Automated A/B tests</li>
+                            <li>Predictive analytics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Channel Comparison Chart -->
+        <div class="chart-section" style="margin-top: 2rem;">
+            <div class="chart-header">
+                <h2 class="chart-title">📊 Creative Element Performance by Channel</h2>
+            </div>
+            <div class="chart-container">
+                <canvas id="elementByChannelChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cross-Channel Performance Chart
+        const crossChannelCtx = document.getElementById('crossChannelChart');
+        new Chart(crossChannelCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                datasets: [
+                    {
+                        label: 'Email',
+                        data: [38, 39, 40, 41, 42, 43],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'SMS',
+                        data: [82, 84, 86, 87, 88, 89],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'WhatsApp',
+                        data: [68, 70, 72, 74, 75, 76],
+                        borderColor: '#25D366',
+                        backgroundColor: 'rgba(37, 211, 102, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Social Media',
+                        data: [6.5, 7.2, 7.8, 8.2, 8.6, 8.9],
+                        borderColor: '#ec4899',
+                        backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Display Ads',
+                        data: [1.8, 2.1, 2.3, 2.5, 2.7, 2.8],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Engagement Rate (%)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Element by Channel Chart
+        const elementByChannelCtx = document.getElementById('elementByChannelChart');
+        new Chart(elementByChannelCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Color', 'Text Quality', 'Personalization', 'Timing', 'CTA', 'Visual Design'],
+                datasets: [
+                    {
+                        label: 'Email',
+                        data: [89, 92, 94, 88, 90, 87],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)'
+                    },
+                    {
+                        label: 'SMS',
+                        data: [78, 95, 91, 92, 88, 75],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)'
+                    },
+                    {
+                        label: 'WhatsApp',
+                        data: [82, 93, 98, 89, 85, 86],
+                        borderColor: '#25D366',
+                        backgroundColor: 'rgba(37, 211, 102, 0.2)'
+                    },
+                    {
+                        label: 'Social',
+                        data: [92, 87, 85, 91, 89, 94],
+                        borderColor: '#ec4899',
+                        backgroundColor: 'rgba(236, 72, 153, 0.2)'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
