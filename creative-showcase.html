@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Showcase - Real Ad Examples | Creative Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #334155;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .section-description {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .platform-section {
+            margin-bottom: 3rem;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .platform-icon.facebook {
+            background: #1877F2;
+        }
+
+        .platform-icon.instagram {
+            background: linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #FCAF45 100%);
+        }
+
+        .platform-icon.google {
+            background: #4285F4;
+        }
+
+        .platform-icon.tiktok {
+            background: #000000;
+        }
+
+        .platform-icon.linkedin {
+            background: #0A66C2;
+        }
+
+        .platform-icon.email {
+            background: #6366f1;
+        }
+
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .ad-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .ad-image {
+            width: 100%;
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .ad-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+        }
+
+        .ad-platform-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-score-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.4);
+        }
+
+        .ad-content {
+            padding: 1.5rem;
+        }
+
+        .ad-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .brand-info {
+            flex: 1;
+        }
+
+        .brand-name {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.875rem;
+        }
+
+        .sponsored-label {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        .ad-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .ad-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.9375rem;
+        }
+
+        .ad-cta {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .ad-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(102, 126, 234, 0.4);
+        }
+
+        .ad-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .ai-insights {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .ai-insights-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .ai-tag {
+            padding: 0.25rem 0.75rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Image gradients for examples */
+        .img-fashion {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .img-tech {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .img-food {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .img-fitness {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .img-travel {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .img-ecommerce {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .img-saas {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .img-real-estate {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+
+        .img-education {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        .img-automotive {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        }
+
+        .img-finance {
+            background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+        }
+
+        .img-entertainment {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+        }
+
+        .filter-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .filter-button {
+            padding: 0.5rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .filter-button:hover,
+        .filter-button.active {
+            border-color: #667eea;
+            color: #667eea;
+            background: #f8f9ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        <h1>🎨 Creative Showcase</h1>
+        <p>Real ad examples analyzed by AI across all platforms</p>
+    </div>
+
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Live Creative Performance Examples</h2>
+            <p class="section-description">
+                Explore real marketing creative examples from top-performing campaigns across multiple platforms.
+                Each ad is analyzed by our AI to score visual elements, text quality, sentiment, and predicted performance.
+                See what makes great creative work and learn from the best.
+            </p>
+        </div>
+
+        <div class="filter-bar">
+            <span class="filter-label">Filter by:</span>
+            <button class="filter-button active">All Platforms</button>
+            <button class="filter-button">Facebook/Instagram</button>
+            <button class="filter-button">Google Ads</button>
+            <button class="filter-button">TikTok</button>
+            <button class="filter-button">Email</button>
+            <button class="filter-button">LinkedIn</button>
+        </div>
+
+        <!-- Facebook/Instagram Ads -->
+        <div class="platform-section">
+            <div class="platform-header">
+                <div class="platform-icon facebook">f</div>
+                <h3 class="platform-name">Facebook & Instagram Ads</h3>
+            </div>
+
+            <div class="ads-grid">
+                <!-- Fashion Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-fashion">
+                        <div class="ad-platform-badge">
+                            📷 Instagram Feed
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 94/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">F</div>
+                            <div class="brand-info">
+                                <div class="brand-name">FashionForward</div>
+                                <div class="sponsored-label">Sponsored</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Transform Your Summer Wardrobe</h3>
+                        <p class="ad-description">
+                            Discover our latest collection of sustainable fashion. Limited time: 40% off new arrivals.
+                            Free shipping on orders over $50.
+                        </p>
+                        <a href="#" class="ad-cta">Shop Now</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">8.9%</div>
+                                <div class="metric-label">Engagement</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">42K</div>
+                                <div class="metric-label">Reach</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$4.2K</div>
+                                <div class="metric-label">Revenue</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Gradient: High Impact</span>
+                                <span class="ai-tag">Sentiment: Joy (92%)</span>
+                                <span class="ai-tag">CTA: Action Verb</span>
+                                <span class="ai-tag">Mobile-Optimized</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tech Product Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-tech">
+                        <div class="ad-platform-badge">
+                            📘 Facebook Feed
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 91/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">T</div>
+                            <div class="brand-info">
+                                <div class="brand-name">TechInnovate</div>
+                                <div class="sponsored-label">Sponsored</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">The Future of Smart Home Technology</h3>
+                        <p class="ad-description">
+                            Experience seamless automation with our AI-powered smart home system.
+                            Control everything from your phone. 30-day free trial.
+                        </p>
+                        <a href="#" class="ad-cta">Start Free Trial</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">6.2%</div>
+                                <div class="metric-label">CTR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">128K</div>
+                                <div class="metric-label">Impressions</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$8.9K</div>
+                                <div class="metric-label">Revenue</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Blue: Trust +35%</span>
+                                <span class="ai-tag">Tech Appeal</span>
+                                <span class="ai-tag">Clear Value Prop</span>
+                                <span class="ai-tag">Free Trial Hook</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Food/Restaurant Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-food">
+                        <div class="ad-platform-badge">
+                            📷 Instagram Stories
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 96/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">G</div>
+                            <div class="brand-info">
+                                <div class="brand-name">Gourmet Delights</div>
+                                <div class="sponsored-label">Sponsored</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Fresh. Local. Delicious. 🍕</h3>
+                        <p class="ad-description">
+                            Authentic Italian pizza made with locally-sourced ingredients.
+                            Order now and get 20% off your first order. Free delivery within 5 miles.
+                        </p>
+                        <a href="#" class="ad-cta">Order Now</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">12.4%</div>
+                                <div class="metric-label">Swipe Up</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">89K</div>
+                                <div class="metric-label">Views</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$12K</div>
+                                <div class="metric-label">Orders</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Warm Colors: +61%</span>
+                                <span class="ai-tag">Emoji: Engaging</span>
+                                <span class="ai-tag">Local Focus</span>
+                                <span class="ai-tag">Urgency: 20% Off</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Ads -->
+        <div class="platform-section">
+            <div class="platform-header">
+                <div class="platform-icon google">G</div>
+                <h3 class="platform-name">Google Ads</h3>
+            </div>
+
+            <div class="ads-grid">
+                <!-- SaaS Product Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-saas">
+                        <div class="ad-platform-badge">
+                            🔍 Google Display
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 89/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">P</div>
+                            <div class="brand-info">
+                                <div class="brand-name">ProductivityPro</div>
+                                <div class="sponsored-label">Ad • productivitypro.com</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Boost Team Productivity by 40%</h3>
+                        <p class="ad-description">
+                            All-in-one project management tool trusted by 50,000+ teams.
+                            Real-time collaboration, task automation, and analytics dashboard included.
+                        </p>
+                        <a href="#" class="ad-cta">Get Started Free</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">4.8%</div>
+                                <div class="metric-label">CTR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">242K</div>
+                                <div class="metric-label">Impressions</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">892</div>
+                                <div class="metric-label">Sign-ups</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Numbers: Credible</span>
+                                <span class="ai-tag">B2B Tone</span>
+                                <span class="ai-tag">Benefits-Focused</span>
+                                <span class="ai-tag">Social Proof</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-commerce Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-ecommerce">
+                        <div class="ad-platform-badge">
+                            🔍 Google Shopping
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 87/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">H</div>
+                            <div class="brand-info">
+                                <div class="brand-name">HomeEssentials</div>
+                                <div class="sponsored-label">Ad • homeessentials.shop</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Premium Kitchen Appliances - 50% Off</h3>
+                        <p class="ad-description">
+                            Upgrade your kitchen with professional-grade appliances.
+                            Limited stock available. Free shipping + 2-year warranty included.
+                        </p>
+                        <a href="#" class="ad-cta">Shop Deals</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">3.9%</div>
+                                <div class="metric-label">CTR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">167K</div>
+                                <div class="metric-label">Impressions</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$24K</div>
+                                <div class="metric-label">Revenue</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Discount: Clear</span>
+                                <span class="ai-tag">Scarcity: Limited</span>
+                                <span class="ai-tag">Trust: Warranty</span>
+                                <span class="ai-tag">Premium Appeal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real Estate Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-real-estate">
+                        <div class="ad-platform-badge">
+                            🔍 Google Display
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 90/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">D</div>
+                            <div class="brand-info">
+                                <div class="brand-name">DreamHomes Realty</div>
+                                <div class="sponsored-label">Ad • dreamhomes.com</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Find Your Dream Home Today</h3>
+                        <p class="ad-description">
+                            Over 10,000 luxury properties available. Virtual tours, expert agents,
+                            and competitive financing options. Schedule your showing now.
+                        </p>
+                        <a href="#" class="ad-cta">Browse Homes</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">5.2%</div>
+                                <div class="metric-label">CTR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">94K</div>
+                                <div class="metric-label">Views</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">321</div>
+                                <div class="metric-label">Leads</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Aspirational</span>
+                                <span class="ai-tag">Soft Colors</span>
+                                <span class="ai-tag">Value Props</span>
+                                <span class="ai-tag">Action-Driven</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TikTok Ads -->
+        <div class="platform-section">
+            <div class="platform-header">
+                <div class="platform-icon tiktok">🎵</div>
+                <h3 class="platform-name">TikTok Ads</h3>
+            </div>
+
+            <div class="ads-grid">
+                <!-- Fitness App Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-fitness">
+                        <div class="ad-platform-badge">
+                            🎵 TikTok In-Feed
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 93/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">F</div>
+                            <div class="brand-info">
+                                <div class="brand-name">FitLife App</div>
+                                <div class="sponsored-label">Sponsored</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Get Fit in 15 Minutes a Day 💪</h3>
+                        <p class="ad-description">
+                            Join 2M+ users transforming their bodies. Personalized workouts,
+                            meal plans, and AI coaching. First month free!
+                        </p>
+                        <a href="#" class="ad-cta">Download App</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">14.2%</div>
+                                <div class="metric-label">Engagement</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">1.2M</div>
+                                <div class="metric-label">Views</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">24K</div>
+                                <div class="metric-label">Installs</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">UGC-Style: +71%</span>
+                                <span class="ai-tag">Emoji: Gen Z</span>
+                                <span class="ai-tag">Social Proof</span>
+                                <span class="ai-tag">First 3s: Hook</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Travel/Entertainment Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-travel">
+                        <div class="ad-platform-badge">
+                            🎵 TikTok Brand Takeover
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 95/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">A</div>
+                            <div class="brand-info">
+                                <div class="brand-name">AdventureBooker</div>
+                                <div class="sponsored-label">Sponsored</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Your Next Adventure Awaits ✈️</h3>
+                        <p class="ad-description">
+                            Exclusive travel deals to paradise destinations. Book today and save up to 60%.
+                            Flexible cancellation. Limited time offer!
+                        </p>
+                        <a href="#" class="ad-cta">Book Now</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">18.9%</div>
+                                <div class="metric-label">Click Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">3.4M</div>
+                                <div class="metric-label">Reach</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$89K</div>
+                                <div class="metric-label">Bookings</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Dream Appeal</span>
+                                <span class="ai-tag">FOMO: 60% Off</span>
+                                <span class="ai-tag">Pastel Colors</span>
+                                <span class="ai-tag">Flexible Terms</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Entertainment/Gaming Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-entertainment">
+                        <div class="ad-platform-badge">
+                            🎵 TikTok In-Feed
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 92/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">G</div>
+                            <div class="brand-info">
+                                <div class="brand-name">GameVerse</div>
+                                <div class="sponsored-label">Sponsored</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Epic Adventures Start Here 🎮</h3>
+                        <p class="ad-description">
+                            The most addictive mobile game of 2026! Play with millions worldwide.
+                            Download free + get 1000 gems bonus. Rated 4.8★
+                        </p>
+                        <a href="#" class="ad-cta">Play Free</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">16.7%</div>
+                                <div class="metric-label">Tap Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">2.8M</div>
+                                <div class="metric-label">Views</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">147K</div>
+                                <div class="metric-label">Installs</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Bold Colors: High</span>
+                                <span class="ai-tag">Gamification</span>
+                                <span class="ai-tag">Bonus Hook</span>
+                                <span class="ai-tag">Social Play</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Marketing -->
+        <div class="platform-section">
+            <div class="platform-header">
+                <div class="platform-icon email">📧</div>
+                <h3 class="platform-name">Email Marketing</h3>
+            </div>
+
+            <div class="ads-grid">
+                <!-- Education/Course Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-education">
+                        <div class="ad-platform-badge">
+                            📧 Email Campaign
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 91/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">L</div>
+                            <div class="brand-info">
+                                <div class="brand-name">LearnMasters</div>
+                                <div class="sponsored-label">Marketing Email</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Master AI in 6 Weeks 🚀</h3>
+                        <p class="ad-description">
+                            Transform your career with our intensive AI course. Learn from industry experts,
+                            build real projects, and get job placement support. Early bird: 40% off!
+                        </p>
+                        <a href="#" class="ad-cta">Enroll Today</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">47.2%</div>
+                                <div class="metric-label">Open Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">18.9%</div>
+                                <div class="metric-label">Click Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$42K</div>
+                                <div class="metric-label">Revenue</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Subject: 7 words</span>
+                                <span class="ai-tag">Personalized</span>
+                                <span class="ai-tag">Career-Focused</span>
+                                <span class="ai-tag">Discount: Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Automotive Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-automotive">
+                        <div class="ad-platform-badge">
+                            📧 Email Newsletter
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 88/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">E</div>
+                            <div class="brand-info">
+                                <div class="brand-name">EliteDrive Motors</div>
+                                <div class="sponsored-label">Marketing Email</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Test Drive the Future Today</h3>
+                        <p class="ad-description">
+                            Experience our revolutionary electric vehicle lineup. Zero emissions,
+                            300+ mile range, and cutting-edge technology. Schedule your test drive.
+                        </p>
+                        <a href="#" class="ad-cta">Book Test Drive</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">39.8%</div>
+                                <div class="metric-label">Open Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">12.4%</div>
+                                <div class="metric-label">Click Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">142</div>
+                                <div class="metric-label">Test Drives</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Premium Tone</span>
+                                <span class="ai-tag">Innovation Focus</span>
+                                <span class="ai-tag">Dark Aesthetic</span>
+                                <span class="ai-tag">Clear CTA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finance/Investment Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-finance">
+                        <div class="ad-platform-badge">
+                            📧 Email Drip Campaign
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 90/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">W</div>
+                            <div class="brand-info">
+                                <div class="brand-name">WealthBuilder</div>
+                                <div class="sponsored-label">Marketing Email</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Build Wealth While You Sleep</h3>
+                        <p class="ad-description">
+                            Automated investing made simple. Our AI manages your portfolio 24/7.
+                            $0 commissions, personalized strategy, and bank-level security.
+                        </p>
+                        <a href="#" class="ad-cta">Start Investing</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">44.1%</div>
+                                <div class="metric-label">Open Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">16.7%</div>
+                                <div class="metric-label">Click Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$127K</div>
+                                <div class="metric-label">AUM</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">Trust: Security</span>
+                                <span class="ai-tag">Automated Value</span>
+                                <span class="ai-tag">Green: Money</span>
+                                <span class="ai-tag">Benefit-Driven</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LinkedIn Ads -->
+        <div class="platform-section">
+            <div class="platform-header">
+                <div class="platform-icon linkedin">in</div>
+                <h3 class="platform-name">LinkedIn Ads</h3>
+            </div>
+
+            <div class="ads-grid">
+                <!-- B2B SaaS Ad -->
+                <div class="ad-card">
+                    <div class="ad-image img-saas">
+                        <div class="ad-platform-badge">
+                            💼 LinkedIn Sponsored
+                        </div>
+                        <div class="ai-score-badge">
+                            AI Score: 87/100
+                        </div>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-brand">
+                            <div class="brand-logo">S</div>
+                            <div class="brand-info">
+                                <div class="brand-name">SalesForce Pro</div>
+                                <div class="sponsored-label">Promoted</div>
+                            </div>
+                        </div>
+                        <h3 class="ad-title">Close 30% More Deals This Quarter</h3>
+                        <p class="ad-description">
+                            Enterprise CRM trusted by Fortune 500 companies. AI-powered insights,
+                            pipeline management, and seamless integrations. Request a demo.
+                        </p>
+                        <a href="#" class="ad-cta">Request Demo</a>
+
+                        <div class="ad-metrics">
+                            <div class="metric">
+                                <div class="metric-value">5.1%</div>
+                                <div class="metric-label">CTR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">84K</div>
+                                <div class="metric-label">Impressions</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">231</div>
+                                <div class="metric-label">Leads</div>
+                            </div>
+                        </div>
+
+                        <div class="ai-insights">
+                            <div class="ai-insights-title">🤖 AI Analysis</div>
+                            <div class="ai-tags">
+                                <span class="ai-tag">B2B Professional</span>
+                                <span class="ai-tag">Results-Focused</span>
+                                <span class="ai-tag">Enterprise Trust</span>
+                                <span class="ai-tag">Clear ROI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="background: white; padding: 3rem; text-align: center; margin-top: 3rem;">
+        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1e293b;">Ready to Create High-Performing Ads?</h3>
+        <p style="color: #64748b; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Use Creative Intelligence to analyze your ads, predict performance, and optimize every element for maximum ROI.
+        </p>
+        <a href="index.html" style="display: inline-block; padding: 1rem 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 12px; font-weight: 600;">
+            Explore Platform
+        </a>
+    </div>
+</body>
+</html>
